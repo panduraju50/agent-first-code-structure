@@ -95,3 +95,21 @@ mod header_tests {
         assert_eq!(pairs, vec![("to".to_string(), "alice".to_string())]);
     }
 }
+
+/// Maximum stored body length accepted by the v1 delivery endpoint.
+pub const MAX_STORED_BODY: usize = 24;
+
+/// Reject a stored body the delivery endpoint cannot carry.
+pub fn accepts(stored_body: &str) -> bool {
+    stored_body.len() <= MAX_STORED_BODY
+}
+
+#[cfg(test)]
+mod length_tests {
+    use super::*;
+
+    #[test]
+    fn accepts_a_short_body() {
+        assert!(accepts("to: alice"));
+    }
+}

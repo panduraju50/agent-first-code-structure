@@ -96,18 +96,22 @@ did not survive, and the strongest result is a negative one.
   well-structured repository. Two rounds, seven traps, decoys that compile: a
   bare one-shot prompt with no context scored identically to plan→build→review
   with a manifest and a test loop. See [experiment 3](experiment3/RESULTS.md).
-- **A shared contract object turns a three-site change into a one-site change.**
-  Put the thing two pieces of code must agree about into one artifact they both
-  consume, and give it an executable invariant. Across 6 runs and two prompt
-  wordings, every run changed exactly one line in one file; plain and graph runs
-  changed three files every time. Zero variance — a structural fact rather than a
-  statistical one.
+- **A shared contract object turns a three-site change into a one-site change,
+  and that shows up as correctness.** Put the thing two pieces of code must agree
+  about into one artifact they both consume, with an executable invariant. Across
+  33 runs and two prompt wordings: **15/15 correct against 11/18**, Fisher exact
+  **p = 0.009**. Every contract run changed exactly one line in one file.
+- **And it is worth nothing where the artifact does not encode the coupling.** A
+  falsification round changed a property the table cannot express — escaping more
+  characters makes bodies *longer*, and a length limit lives downstream. Both arms
+  scored **0/5**, identically, all shipping a false green. That rules out the
+  obvious rival explanation, that the contract repository is simply a nicer
+  codebase to work in; if it were, that round would have gone the same way as the
+  others.
 - **A dependency graph: unproven.** An early round appeared to show a large
   effect. It did not replicate, and part of it traced to a confound in my own
-  prompt. Pooled over every run: plain 6/9 correct, graph 6/6, contract 6/6 —
-  Fisher exact p = 0.23, not significant. What separates the conditions is blast
-  radius, not correctness: a graph helps an agent *navigate* three edit sites; a
-  contract object removes two of them.
+  prompt. A graph helps an agent *navigate* three edit sites; a contract object
+  removes two of them.
 
 **What did not hold:**
 

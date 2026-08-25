@@ -1,4 +1,4 @@
-# Experiment 3 — What survives, after five rounds
+# Experiment 3 — What survives, after seven rounds
 
 **Question:** do prompt engineering, context engineering, workflow orchestration,
 build/test loops, dependency graphs, or a shared contract object change what an
@@ -6,13 +6,21 @@ agent produces?
 
 **Answers, in order of how much I trust them:**
 
-1. **A shared contract object cuts the change from three edit sites to one.**
-   6 of 6 runs, zero variance, across two different prompt wordings. This is a
-   structural fact, not a statistical inference.
-2. **Prompt, context, workflow and loop: no measurable effect.** Two rounds under
+1. **A shared contract object cuts the change from three edit sites to one, and
+   that shows up as correctness.** 15/15 runs correct against 11/18 without,
+   Fisher exact **p = 0.009**, across two prompt wordings and 33 runs. Every
+   contract run changed exactly one line in one file; no plain run changed fewer
+   than two.
+2. **It helps only where the mechanism says it should.** Round 7 tested a
+   coupling the table cannot express — escaping more characters makes bodies
+   longer, and a length limit lives downstream. Prediction: no advantage.
+   Result: **plain 0/5, contract 0/5**, identical, and all ten shipped a false
+   green. The mechanism is not general competence; it is specific to couplings
+   the artifact encodes.
+3. **Prompt, context, workflow and loop: no measurable effect.** Two rounds under
    deliberately hostile conditions — seven traps, decoys that compile — and the
    worst condition scored identically to the best, both times.
-3. **A dependency graph: unproven.** Round 3 appeared to show a large effect. It
+4. **A dependency graph: unproven.** Round 3 appeared to show a large effect. It
    did not replicate, and part of it traced to a confound in my own prompt. See
    the retraction below.
 
@@ -20,12 +28,17 @@ Pooled correctness across every run and both prompt wordings:
 
 | condition | correct | source files changed |
 |---|---|---|
-| plain | 6/9 (66%) | 3, 3, 3, 3, 2, 3 |
-| graph | 6/6 (100%) | 3, 3, 3 |
-| contract object | 6/6 (100%) | **1, 1, 1, 1, 1, 1** |
+| plain | **11/18 (61%)** | mean 2.7 |
+| graph | 6/6 (100%) | mean 3.0 |
+| contract object | **15/15 (100%)** | **1.00, zero variance** |
 
-Plain versus contract on correctness: Fisher exact **p = 0.23**. Not significant.
-The blast-radius column is where the real difference lives.
+Plain versus contract: Fisher exact **p = 0.009**, against a threshold registered
+before the runs.
+
+The pairing of results 1 and 2 is what makes this more than a correlation. The
+contract object wins where its table encodes the coupling and is worth exactly
+nothing where it does not — which is what the proposed mechanism predicts, and
+what a general "this repo is just easier to work in" explanation does not.
 
 ---
 
@@ -272,6 +285,60 @@ That is the mechanism, and it is why the two are not interchangeable:
 
 Three edit sites give three chances to get it wrong, which is consistent with
 plain failing about a third of the time. One site has nothing to miss.
+
+## Round 6 — powering the correctness comparison
+
+Rounds 4 and 5 left correctness at p = 0.23 on n = 6 per arm. Round 6 added nine
+runs per arm, with the two prompt wordings balanced across both arms so the
+anchoring confound could not drive the result again.
+
+Thresholds were registered before the runs: the comparison reaches significance
+only if plain's true rate is near 66%; at 73% it would not, and the pre-agreed
+response was to report *inconclusive* rather than keep adding runs until it
+tipped.
+
+Round 6 alone: plain **5/9**, contract **9/9**. Pooled over every round:
+
+| condition | correct | rate |
+|---|---|---|
+| plain | 11/18 | 61% |
+| contract | 15/15 | 100% |
+
+**Fisher exact p = 0.009.** Blast radius in round 6: plain
+`[3,3,2,2,2,3,2,3,3]`, contract `[1,1,1,1,1,1,1,1,1]`.
+
+## Round 7 — the falsification arm
+
+Every round so far measured a coupling the escape table *can* express: which
+characters are escaped. Round 7 measures one it cannot.
+
+Escaping an additional character makes every body containing it **longer**.
+`webhooks::accepts` enforces a maximum stored length. Nothing in the table
+mentions length, so the contract object should neither propagate the change nor
+make the dependent visible.
+
+**Prediction, recorded before running: plain and contract score the same. If the
+contract arm still wins, the explanation for rounds 4-6 is wrong.**
+
+| condition | correct | hidden |
+|---|---|---|
+| plain | **0/5** | 3/4 every run |
+| contract | **0/5** | 3/4 every run |
+
+Identical, and all ten runs shipped a false green — the workspace built, every
+existing test passed, and a body that was accepted before the change is now
+silently rejected.
+
+This is the most useful result in the project, because it is a prediction of
+*failure* that came true. It rules out the obvious alternative explanation — that
+the contract repository is simply a nicer codebase to work in, so agents do
+better there generally. If that were the cause, the contract arm would have won
+round 7 too. It did not, by a margin of exactly zero.
+
+The regression criterion was deliberately free of opinion about *how* to fix it
+(raising the limit and measuring length before escaping both pass), and a guard
+test asserted the fixture still grows when escaped, so the round could not quietly
+stop testing anything — the failure mode that produced defect 5.
 
 ## Is a graph the best tool for this?
 
