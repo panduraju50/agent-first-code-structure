@@ -1,0 +1,106 @@
+{
+  "generated_by": "scaffold.py \u2014 do not hand-edit",
+  "project": "taskly",
+  "capabilities": [
+    {
+      "capability": "create_task",
+      "unit": "tasks",
+      "layer": "domains"
+    },
+    {
+      "capability": "create_user",
+      "unit": "users",
+      "layer": "domains"
+    },
+    {
+      "capability": "encode_id",
+      "unit": "ids",
+      "layer": "core"
+    },
+    {
+      "capability": "get_user",
+      "unit": "users",
+      "layer": "domains"
+    },
+    {
+      "capability": "list_tasks",
+      "unit": "tasks",
+      "layer": "domains"
+    },
+    {
+      "capability": "notify",
+      "unit": "notifier",
+      "layer": "domains"
+    },
+    {
+      "capability": "run",
+      "unit": "app",
+      "layer": "app"
+    },
+    {
+      "capability": "validate_email",
+      "unit": "validation",
+      "layer": "core"
+    },
+    {
+      "capability": "validate_title",
+      "unit": "validation",
+      "layer": "core"
+    }
+  ],
+  "edges": [
+    {
+      "from": "app",
+      "to": "notifier"
+    },
+    {
+      "from": "app",
+      "to": "tasks"
+    },
+    {
+      "from": "app",
+      "to": "users"
+    },
+    {
+      "from": "notifier",
+      "to": "ids"
+    },
+    {
+      "from": "tasks",
+      "to": "ids"
+    },
+    {
+      "from": "tasks",
+      "to": "validation"
+    },
+    {
+      "from": "users",
+      "to": "ids"
+    },
+    {
+      "from": "users",
+      "to": "validation"
+    }
+  ],
+  "effects": {
+    "ids": [],
+    "validation": [],
+    "users": [
+      "store"
+    ],
+    "tasks": [
+      "store"
+    ],
+    "notifier": [
+      "net"
+    ],
+    "app": [
+      "net",
+      "store"
+    ]
+  },
+  "derived_infrastructure": [
+    "network egress",
+    "persistent volume or database"
+  ]
+}

@@ -86,6 +86,19 @@ Both paths are tested:
 This is the fix for the original Design D weakness: the hand-written `graph.json`
 drifted. Here the manifest is derived, so it cannot.
 
+## Committed examples
+
+`examples/` holds the output of the example spec in all five languages —
+committed so you can read the emitted shape without running anything. Every file
+there is generated; nothing is hand-edited. Go, Rust, Java and Python were
+compiled from that directory to confirm the emitted graph is real.
+
+Regenerate any of them with:
+
+```bash
+python3 scaffold.py gen taskly.spec.json --lang rust --out examples/rust
+```
+
 ## Adding a language
 
 Write one emitter returning `{path: content}`, register it in `EMITTERS`, and add

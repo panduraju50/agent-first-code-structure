@@ -1,0 +1,8 @@
+[package]
+name = "users"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ids = { path = "../ids" }
+validation = { path = "../validation" }

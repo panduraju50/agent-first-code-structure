@@ -1,0 +1,84 @@
+{
+  "project": "taskly",
+  "module": "example.com/taskly",
+  "units": [
+    {
+      "name": "ids",
+      "layer": "core",
+      "capabilities": [
+        "encode_id"
+      ],
+      "effects": [],
+      "uses": []
+    },
+    {
+      "name": "validation",
+      "layer": "core",
+      "capabilities": [
+        "validate_email",
+        "validate_title"
+      ],
+      "effects": [],
+      "uses": []
+    },
+    {
+      "name": "users",
+      "layer": "domains",
+      "capabilities": [
+        "create_user",
+        "get_user"
+      ],
+      "effects": [
+        "store"
+      ],
+      "uses": [
+        "ids",
+        "validation"
+      ]
+    },
+    {
+      "name": "tasks",
+      "layer": "domains",
+      "capabilities": [
+        "create_task",
+        "list_tasks"
+      ],
+      "effects": [
+        "store"
+      ],
+      "uses": [
+        "ids",
+        "validation"
+      ]
+    },
+    {
+      "name": "notifier",
+      "layer": "domains",
+      "capabilities": [
+        "notify"
+      ],
+      "effects": [
+        "net"
+      ],
+      "uses": [
+        "ids"
+      ]
+    },
+    {
+      "name": "app",
+      "layer": "app",
+      "capabilities": [
+        "run"
+      ],
+      "effects": [
+        "store",
+        "net"
+      ],
+      "uses": [
+        "users",
+        "tasks",
+        "notifier"
+      ]
+    }
+  ]
+}
