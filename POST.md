@@ -52,8 +52,7 @@ one file. The graph rescued them from a problem I made.
 
 ---
 
-**5/** What worked: put the thing two components must agree on into ONE object
-they both read.
+**5/** What worked: put the thing two components must agree on into ONE object both read.
 
 Not a doc. Not a graph. A table:
 
