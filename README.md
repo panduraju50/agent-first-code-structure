@@ -1,16 +1,17 @@
-# How Should Code Be Structured *for AI Agents*?
+# Agent-First Architecture
 
-An experiment. Human repo conventions (`src/services/...`) are optimized for human
-reading. But when an AI agent writes, reviews, and maintains the code, the
-constraints are different: an agent is a **local reasoner with a bounded context
-window and no persistent memory of the repo**. It duplicates code it can't
-retrieve, reviews only what's in front of it, and stops at the first green.
+*Organising a codebase for the agent that will write, review and maintain it.*
 
-This repo asks: *what repo structure makes an agent build code with less
-duplication, easier review, and easier testing?* — and tries to answer it
-empirically by generating the **same program** in many structural layouts,
-planting **identical bugs** in every one, and having **isolated agents** work each
-layout cold.
+Human repo conventions (`src/services/...`) are optimised for human reading. When
+an AI agent does the work the constraints change: an agent is a **local reasoner
+with a bounded context window and no persistent memory of the repo**. It
+duplicates code it cannot retrieve, reviews only what is in front of it, and stops
+at the first green.
+
+**Agent-first architecture** is the practice of shaping a repository around those
+constraints — where a capability lives, what makes it findable, and what the
+existing code teaches by example. This repo is an attempt to test which parts of
+that practice actually work, rather than assert them.
 
 It is published with its own failures intact. Two early conclusions were
 withdrawn after I found I had leaked the answer into one contestant and had
@@ -26,10 +27,12 @@ rather than quietly fixed.
 2. **Isolated, same-capability agents** each receive **one** variant cold — no
    answer key, blind to sibling variants — and must add a feature and audit the
    code. This measures real *adoptability*, not opinion.
-3. A **synthesis** pass ranks designs by planted-bug catch rate, whether the agent
-   introduced *new* duplication, and navigation cost.
+3. Scoring. Experiments 1 and 2 used a synthesis pass over the agents' structured
+   reports — which is where the withdrawn ranking came from. Experiment 3 replaced
+   that with a **program**: hidden acceptance tests, a missing-edge duplication
+   check and decoy detection, with no LLM judge anywhere in the measurement.
 
-## Two rounds
+## Three experiments
 
 ### Experiment 1 — tiny (`experiment/`)
 Link-shortener, ~4 files, **10 designs A–J**. Planted: a duplicated base62 encoder
@@ -73,7 +76,7 @@ See [`experiment3/RESULTS.md`](experiment3/RESULTS.md).
 Read the limitations below before quoting any of this. Several early conclusions
 did not survive, and the strongest result is a negative one.
 
-**What holds:**
+**What holds** — the load-bearing parts of the practice:
 
 - **Given an empty folder, models converge.** Opus, Sonnet, and Haiku each built
   the same app with no structure imposed, and all three independently produced a
