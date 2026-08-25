@@ -1,0 +1,20 @@
+{
+  "units": [
+    {
+      "id": "is_due_soon",
+      "api": "is_due_soon(due_ts,now_ts,threshold=86400)->bool"
+    },
+    {
+      "id": "check_task_reminder",
+      "api": "check_task_reminder(task,now_ts,threshold=86400)->dict|None"
+    },
+    {
+      "id": "scan_due_reminders",
+      "api": "scan_due_reminders(pid,now_ts,threshold=86400)->list"
+    },
+    {
+      "id": "clear_reminder_state",
+      "api": "clear_reminder_state(tid)->None"
+    }
+  ]
+}

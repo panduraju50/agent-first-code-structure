@@ -1,0 +1,16 @@
+{
+  "units": [
+    {
+      "id": "validate_email",
+      "api": "validate_email(s)->bool"
+    },
+    {
+      "id": "validate_nonempty",
+      "api": "validate_nonempty(s)->bool"
+    },
+    {
+      "id": "validate_title",
+      "api": "validate_title(s)->bool"
+    }
+  ]
+}

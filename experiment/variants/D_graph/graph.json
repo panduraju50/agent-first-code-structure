@@ -1,0 +1,46 @@
+{
+  "nodes": [
+    {
+      "id": "n_codec",
+      "file": "blobs/n_codec.py",
+      "contract": "b62(n)->str"
+    },
+    {
+      "id": "n_validate",
+      "file": "blobs/n_validate.py",
+      "contract": "validate_url(u)->bool, validate_alias(a)->bool"
+    },
+    {
+      "id": "n_store",
+      "file": "blobs/n_store.py",
+      "contract": "shorten(url, alias=None)->code, resolve(code)->url"
+    },
+    {
+      "id": "n_preview",
+      "file": "blobs/n_preview.py",
+      "contract": "preview(n)->str"
+    }
+  ],
+  "edges": [
+    {
+      "from": "n_store",
+      "to": "n_codec",
+      "type": "uses"
+    },
+    {
+      "from": "n_store",
+      "to": "n_validate",
+      "type": "uses"
+    },
+    {
+      "from": "n_validate",
+      "to": "n_codec",
+      "type": "uses"
+    },
+    {
+      "from": "n_preview",
+      "to": "n_codec",
+      "type": "SHOULD_use_but_does_not"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "children": [
+    "core/codec/INDEX.json",
+    "core/store/INDEX.json",
+    "core/validate/INDEX.json"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "units": [
+    {
+      "id": "create_task",
+      "api": "create_task(pid,title,due=None)->dict"
+    },
+    {
+      "id": "set_due_date",
+      "api": "set_due_date(tid,due)->dict"
+    },
+    {
+      "id": "list_tasks",
+      "api": "list_tasks(pid)->list"
+    },
+    {
+      "id": "complete_task",
+      "api": "complete_task(tid)->dict"
+    },
+    {
+      "id": "assign_task",
+      "api": "assign_task(tid,uid,actor)->dict"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "nodes": [
+    {
+      "id": "genid",
+      "file": "blobs/genid.py",
+      "contract": "genid(n)->str"
+    },
+    {
+      "id": "uuid_like",
+      "file": "blobs/uuid_like.py",
+      "contract": "uuid_like(n)->str"
+    },
+    {
+      "id": "validate_email",
+      "file": "blobs/validate_email.py",
+      "contract": "validate_email(s)->bool"
+    },
+    {
+      "id": "validate_nonempty",
+      "file": "blobs/validate_nonempty.py",
+      "contract": "validate_nonempty(s)->bool"
+    },
+    {
+      "id": "validate_title",
+      "file": "blobs/validate_title.py",
+      "contract": "validate_title(s)->bool"
+    },
+    {
+      "id": "format_date",
+      "file": "blobs/format_date.py",
+      "contract": "format_date(ts)->str"
+    },
+    {
+      "id": "parse_date",
+      "file": "blobs/parse_date.py",
+      "contract": "parse_date(s)->int"
+    },
+    {
+      "id": "hash_pw",
+      "file": "blobs/hash_pw.py",
+      "contract": "hash_pw(pw)->str"
+    },
+    {
+      "id": "verify_pw",
+      "file": "blobs/verify_pw.py",
+      "contract": "verify_pw(pw,h)->bool"
+    },
+    {
+      "id": "make_token",
+      "file": "blobs/make_token.py",
+      "contract": "make_token(uid)->str"
+    },
+    {
+      "id": "check_token",
+      "file": "blobs/check_token.py",
+      "contract": "check_token(tok)->int|None"
+    },
+    {
+      "id": "create_user",
+      "file": "blobs/create_user.py",
+      "contract": "create_user(email,pw)->dict"
+    },
+    {
+      "id": "get_user",
+      "file": "blobs/get_user.py",
+      "contract": "get_user(uid)->dict|None"
+    },
+    {
+      "id": "create_project",
+      "file": "blobs/create_project.py",
+      "contract": "create_project(owner,name)->dict"
+    },
+    {
+      "id": "list_projects",
+      "file": "blobs/list_projects.py",
+      "contract": "list_projects(owner)->list"
+    },
+    {
+      "id": "create_task",
+      "file": "blobs/create_task.py",
+      "contract": "create_task(pid,title)->dict"
+    },
+    {
+      "id": "list_tasks",
+      "file": "blobs/list_tasks.py",
+      "contract": "list_tasks(pid)->list"
+    },
+    {
+      "id": "complete_task",
+      "file": "blobs/complete_task.py",
+      "contract": "complete_task(tid)->dict"
+    },
+    {
+      "id": "assign_task",
+      "file": "blobs/assign_task.py",
+      "contract": "assign_task(tid,uid,actor)->dict"
+    },
+    {
+      "id": "add_tag",
+      "file": "blobs/add_tag.py",
+      "contract": "add_tag(tid,tag)->None"
+    },
+    {
+      "id": "list_tags",
+      "file": "blobs/list_tags.py",
+      "contract": "list_tags(tid)->list"
+    },
+    {
+      "id": "add_comment",
+      "file": "blobs/add_comment.py",
+      "contract": "add_comment(tid,ts,body)->dict"
+    },
+    {
+      "id": "list_comments",
+      "file": "blobs/list_comments.py",
+      "contract": "list_comments(tid)->list"
+    },
+    {
+      "id": "notify",
+      "file": "blobs/notify.py",
+      "contract": "notify(uid,msg,seq)->dict"
+    },
+    {
+      "id": "search_tasks",
+      "file": "blobs/search_tasks.py",
+      "contract": "search_tasks(q)->list"
+    },
+    {
+      "id": "paginate",
+      "file": "blobs/paginate.py",
+      "contract": "paginate(items,page,size)->list"
+    },
+    {
+      "id": "remind_due",
+      "file": "blobs/remind_due.py",
+      "contract": "remind_due(tid,now)->dict|None"
+    }
+  ],
+  "edges": [
+    {
+      "from": "uuid_like",
+      "to": "genid",
+      "type": "uses"
+    },
+    {
+      "from": "verify_pw",
+      "to": "hash_pw",
+      "type": "uses"
+    },
+    {
+      "from": "create_user",
+      "to": "validate_email",
+      "type": "uses"
+    },
+    {
+      "from": "create_user",
+      "to": "hash_pw",
+      "type": "uses"
+    },
+    {
+      "from": "create_user",
+      "to": "genid",
+      "type": "uses"
+    },
+    {
+      "from": "create_project",
+      "to": "validate_nonempty",
+      "type": "uses"
+    },
+    {
+      "from": "create_task",
+      "to": "validate_title",
+      "type": "uses"
+    },
+    {
+      "from": "notify",
+      "to": "genid",
+      "type": "SHOULD_use_but_does_not"
+    },
+    {
+      "from": "add_comment",
+      "to": "format_date",
+      "type": "SHOULD_use_but_does_not"
+    },
+    {
+      "from": "remind_due",
+      "to": "notify",
+      "type": "uses"
+    },
+    {
+      "from": "remind_due",
+      "to": "format_date",
+      "type": "uses"
+    },
+    {
+      "from": "remind_due",
+      "to": "create_task",
+      "type": "uses"
+    }
+  ]
+}

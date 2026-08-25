@@ -1,0 +1,12 @@
+{
+  "units": [
+    {
+      "id": "create_user",
+      "api": "create_user(email,pw)->dict"
+    },
+    {
+      "id": "get_user",
+      "api": "get_user(uid)->dict|None"
+    }
+  ]
+}

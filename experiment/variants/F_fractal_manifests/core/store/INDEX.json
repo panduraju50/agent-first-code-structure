@@ -1,0 +1,12 @@
+{
+  "units": [
+    {
+      "id": "impl",
+      "api": "shorten(url, alias=None), resolve(code)"
+    },
+    {
+      "id": "preview",
+      "api": "preview(n)"
+    }
+  ]
+}

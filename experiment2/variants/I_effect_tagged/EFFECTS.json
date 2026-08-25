@@ -1,0 +1,143 @@
+{
+  "units": [
+    {
+      "id": "genid",
+      "effects": []
+    },
+    {
+      "id": "uuid_like",
+      "effects": []
+    },
+    {
+      "id": "validate_email",
+      "effects": []
+    },
+    {
+      "id": "validate_nonempty",
+      "effects": []
+    },
+    {
+      "id": "validate_title",
+      "effects": []
+    },
+    {
+      "id": "format_date",
+      "effects": []
+    },
+    {
+      "id": "parse_date",
+      "effects": []
+    },
+    {
+      "id": "hash_pw",
+      "effects": []
+    },
+    {
+      "id": "verify_pw",
+      "effects": []
+    },
+    {
+      "id": "make_token",
+      "effects": []
+    },
+    {
+      "id": "check_token",
+      "effects": []
+    },
+    {
+      "id": "create_user",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "get_user",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "create_project",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "list_projects",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "create_task",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "list_tasks",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "complete_task",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "assign_task",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "add_tag",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "list_tags",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "add_comment",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "list_comments",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "notify",
+      "effects": [
+        "net"
+      ]
+    },
+    {
+      "id": "search_tasks",
+      "effects": [
+        "store"
+      ]
+    },
+    {
+      "id": "paginate",
+      "effects": []
+    },
+    {
+      "id": "check_due_reminders",
+      "effects": [
+        "store",
+        "net"
+      ]
+    }
+  ]
+}

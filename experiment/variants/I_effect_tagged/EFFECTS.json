@@ -1,0 +1,22 @@
+{
+  "units": [
+    {
+      "id": "codec",
+      "effects": []
+    },
+    {
+      "id": "validate",
+      "effects": []
+    },
+    {
+      "id": "store",
+      "effects": [
+        "memory"
+      ]
+    },
+    {
+      "id": "preview",
+      "effects": []
+    }
+  ]
+}

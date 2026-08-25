@@ -1,0 +1,144 @@
+{
+  "capabilities": [
+    {
+      "id": "genid",
+      "package": "packages/ids",
+      "api": "genid(n)->str"
+    },
+    {
+      "id": "uuid_like",
+      "package": "packages/ids",
+      "api": "uuid_like(n)->str"
+    },
+    {
+      "id": "validate_email",
+      "package": "packages/validate",
+      "api": "validate_email(s)->bool"
+    },
+    {
+      "id": "validate_nonempty",
+      "package": "packages/validate",
+      "api": "validate_nonempty(s)->bool"
+    },
+    {
+      "id": "validate_title",
+      "package": "packages/validate",
+      "api": "validate_title(s)->bool"
+    },
+    {
+      "id": "format_date",
+      "package": "packages/dates",
+      "api": "format_date(ts)->str"
+    },
+    {
+      "id": "parse_date",
+      "package": "packages/dates",
+      "api": "parse_date(s)->int"
+    },
+    {
+      "id": "hash_pw",
+      "package": "packages/auth",
+      "api": "hash_pw(pw)->str"
+    },
+    {
+      "id": "verify_pw",
+      "package": "packages/auth",
+      "api": "verify_pw(pw,h)->bool"
+    },
+    {
+      "id": "make_token",
+      "package": "packages/auth",
+      "api": "make_token(uid)->str"
+    },
+    {
+      "id": "check_token",
+      "package": "packages/auth",
+      "api": "check_token(tok)->int|None"
+    },
+    {
+      "id": "create_user",
+      "package": "packages/users",
+      "api": "create_user(email,pw)->dict"
+    },
+    {
+      "id": "get_user",
+      "package": "packages/users",
+      "api": "get_user(uid)->dict|None"
+    },
+    {
+      "id": "create_project",
+      "package": "packages/projects",
+      "api": "create_project(owner,name)->dict"
+    },
+    {
+      "id": "list_projects",
+      "package": "packages/projects",
+      "api": "list_projects(owner)->list"
+    },
+    {
+      "id": "create_task",
+      "package": "packages/tasks",
+      "api": "create_task(pid,title)->dict"
+    },
+    {
+      "id": "list_tasks",
+      "package": "packages/tasks",
+      "api": "list_tasks(pid)->list"
+    },
+    {
+      "id": "complete_task",
+      "package": "packages/tasks",
+      "api": "complete_task(tid)->dict"
+    },
+    {
+      "id": "assign_task",
+      "package": "packages/tasks",
+      "api": "assign_task(tid,uid,actor)->dict"
+    },
+    {
+      "id": "set_due_date",
+      "package": "packages/tasks",
+      "api": "set_due_date(tid,ts)->dict"
+    },
+    {
+      "id": "check_due_reminders",
+      "package": "packages/reminders",
+      "api": "check_due_reminders(now_ts,threshold_seconds)->list"
+    },
+    {
+      "id": "add_tag",
+      "package": "packages/tags",
+      "api": "add_tag(tid,tag)->None"
+    },
+    {
+      "id": "list_tags",
+      "package": "packages/tags",
+      "api": "list_tags(tid)->list"
+    },
+    {
+      "id": "add_comment",
+      "package": "packages/comments",
+      "api": "add_comment(tid,ts,body)->dict"
+    },
+    {
+      "id": "list_comments",
+      "package": "packages/comments",
+      "api": "list_comments(tid)->list"
+    },
+    {
+      "id": "notify",
+      "package": "packages/notifications",
+      "api": "notify(uid,msg,seq)->dict"
+    },
+    {
+      "id": "search_tasks",
+      "package": "packages/search",
+      "api": "search_tasks(q)->list"
+    },
+    {
+      "id": "paginate",
+      "package": "packages/pagination",
+      "api": "paginate(items,page,size)->list"
+    }
+  ]
+}

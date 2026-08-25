@@ -1,0 +1,24 @@
+{
+  "units": [
+    {
+      "id": "u_codec",
+      "purpose": "base62 encode",
+      "api": "b62(n)"
+    },
+    {
+      "id": "u_validate",
+      "purpose": "url + alias validation",
+      "api": "validate_url(u), validate_alias(alias)"
+    },
+    {
+      "id": "u_store",
+      "purpose": "shorten + resolve links",
+      "api": "shorten(url, alias=None), resolve(code)"
+    },
+    {
+      "id": "u_preview",
+      "purpose": "preview a code",
+      "api": "preview(n)"
+    }
+  ]
+}

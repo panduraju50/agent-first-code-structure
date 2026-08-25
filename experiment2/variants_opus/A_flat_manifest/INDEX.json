@@ -1,0 +1,266 @@
+{
+  "units": [
+    {
+      "id": "genid",
+      "module": "ids",
+      "purpose": "encode int to base62 id",
+      "api": "genid(n)->str",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "uuid_like",
+      "module": "ids",
+      "purpose": "pseudo uuid from counter",
+      "api": "uuid_like(n)->str",
+      "effects": [],
+      "deps": [
+        "genid"
+      ]
+    },
+    {
+      "id": "validate_email",
+      "module": "validate",
+      "purpose": "check an email is valid",
+      "api": "validate_email(s)->bool",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "validate_nonempty",
+      "module": "validate",
+      "purpose": "check a string is non-empty",
+      "api": "validate_nonempty(s)->bool",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "validate_title",
+      "module": "validate",
+      "purpose": "check a title length",
+      "api": "validate_title(s)->bool",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "format_date",
+      "module": "dates",
+      "purpose": "format a unix ts to iso-ish",
+      "api": "format_date(ts)->str",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "parse_date",
+      "module": "dates",
+      "purpose": "parse a day string to ts",
+      "api": "parse_date(s)->int",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "hash_pw",
+      "module": "auth",
+      "purpose": "hash a password",
+      "api": "hash_pw(pw)->str",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "verify_pw",
+      "module": "auth",
+      "purpose": "verify a password against a hash",
+      "api": "verify_pw(pw,h)->bool",
+      "effects": [],
+      "deps": [
+        "hash_pw"
+      ]
+    },
+    {
+      "id": "make_token",
+      "module": "auth",
+      "purpose": "issue a session token for a user",
+      "api": "make_token(uid)->str",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "check_token",
+      "module": "auth",
+      "purpose": "resolve a token to a user id",
+      "api": "check_token(tok)->int|None",
+      "effects": [],
+      "deps": []
+    },
+    {
+      "id": "create_user",
+      "module": "users",
+      "purpose": "create a user",
+      "api": "create_user(email,pw)->dict",
+      "effects": [
+        "store"
+      ],
+      "deps": [
+        "validate_email",
+        "hash_pw",
+        "genid"
+      ]
+    },
+    {
+      "id": "get_user",
+      "module": "users",
+      "purpose": "fetch a user by id",
+      "api": "get_user(uid)->dict|None",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "create_project",
+      "module": "projects",
+      "purpose": "create a project owned by a user",
+      "api": "create_project(owner,name)->dict",
+      "effects": [
+        "store"
+      ],
+      "deps": [
+        "validate_nonempty"
+      ]
+    },
+    {
+      "id": "list_projects",
+      "module": "projects",
+      "purpose": "list projects for an owner",
+      "api": "list_projects(owner)->list",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "create_task",
+      "module": "tasks",
+      "purpose": "create a task in a project",
+      "api": "create_task(pid,title,due=None)->dict",
+      "effects": [
+        "store"
+      ],
+      "deps": [
+        "validate_title"
+      ]
+    },
+    {
+      "id": "list_tasks",
+      "module": "tasks",
+      "purpose": "list tasks in a project",
+      "api": "list_tasks(pid)->list",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "complete_task",
+      "module": "tasks",
+      "purpose": "mark a task done",
+      "api": "complete_task(tid)->dict",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "assign_task",
+      "module": "tasks",
+      "purpose": "assign a task to a user",
+      "api": "assign_task(tid,uid,actor)->dict",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "add_tag",
+      "module": "tags",
+      "purpose": "attach a tag to a task",
+      "api": "add_tag(tid,tag)->None",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "list_tags",
+      "module": "tags",
+      "purpose": "list tags for a task",
+      "api": "list_tags(tid)->list",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "add_comment",
+      "module": "comments",
+      "purpose": "add a comment to a task",
+      "api": "add_comment(tid,ts,body)->dict",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "list_comments",
+      "module": "comments",
+      "purpose": "list comments on a task",
+      "api": "list_comments(tid)->list",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "notify",
+      "module": "notifications",
+      "purpose": "send a notification with a short ref code",
+      "api": "notify(uid,msg,seq)->dict",
+      "effects": [
+        "net"
+      ],
+      "deps": []
+    },
+    {
+      "id": "remind_due",
+      "module": "notifications",
+      "purpose": "notify assignees of tasks near or past their due date",
+      "api": "remind_due(now,within=86400)->list",
+      "effects": [
+        "store",
+        "net"
+      ],
+      "deps": [
+        "notify",
+        "format_date"
+      ]
+    },
+    {
+      "id": "search_tasks",
+      "module": "search",
+      "purpose": "search tasks by title substring",
+      "api": "search_tasks(q)->list",
+      "effects": [
+        "store"
+      ],
+      "deps": []
+    },
+    {
+      "id": "paginate",
+      "module": "pagination",
+      "purpose": "slice a list into a page",
+      "api": "paginate(items,page,size)->list",
+      "effects": [],
+      "deps": []
+    }
+  ]
+}

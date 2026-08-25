@@ -1,0 +1,20 @@
+{
+  "units": [
+    {
+      "id": "hash_pw",
+      "api": "hash_pw(pw)->str"
+    },
+    {
+      "id": "verify_pw",
+      "api": "verify_pw(pw,h)->bool"
+    },
+    {
+      "id": "make_token",
+      "api": "make_token(uid)->str"
+    },
+    {
+      "id": "check_token",
+      "api": "check_token(tok)->int|None"
+    }
+  ]
+}

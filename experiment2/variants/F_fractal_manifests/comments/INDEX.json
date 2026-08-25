@@ -1,0 +1,12 @@
+{
+  "units": [
+    {
+      "id": "add_comment",
+      "api": "add_comment(tid,ts,body)->dict"
+    },
+    {
+      "id": "list_comments",
+      "api": "list_comments(tid)->list"
+    }
+  ]
+}

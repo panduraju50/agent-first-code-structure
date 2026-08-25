@@ -1,0 +1,17 @@
+{
+  "children": [
+    "ids/INDEX.json",
+    "validate/INDEX.json",
+    "dates/INDEX.json",
+    "auth/INDEX.json",
+    "users/INDEX.json",
+    "projects/INDEX.json",
+    "tasks/INDEX.json",
+    "tags/INDEX.json",
+    "comments/INDEX.json",
+    "notifications/INDEX.json",
+    "reminders/INDEX.json",
+    "search/INDEX.json",
+    "pagination/INDEX.json"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "units": [
+    {
+      "id": "genid",
+      "api": "genid(n)->str"
+    },
+    {
+      "id": "uuid_like",
+      "api": "uuid_like(n)->str"
+    }
+  ]
+}

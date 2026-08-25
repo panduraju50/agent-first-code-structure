@@ -1,0 +1,24 @@
+{
+  "capabilities": [
+    {
+      "id": "codec",
+      "package": "packages/codec",
+      "api": "b62(n)"
+    },
+    {
+      "id": "validate",
+      "package": "packages/validate",
+      "api": "validate_url(u), validate_alias(alias)"
+    },
+    {
+      "id": "store",
+      "package": "packages/store",
+      "api": "shorten(url, alias=None), resolve(code)"
+    },
+    {
+      "id": "preview",
+      "package": "packages/preview",
+      "api": "preview(n)"
+    }
+  ]
+}

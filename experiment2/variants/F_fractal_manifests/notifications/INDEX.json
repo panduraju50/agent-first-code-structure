@@ -1,0 +1,8 @@
+{
+  "units": [
+    {
+      "id": "notify",
+      "api": "notify(uid,msg,seq)->dict"
+    }
+  ]
+}

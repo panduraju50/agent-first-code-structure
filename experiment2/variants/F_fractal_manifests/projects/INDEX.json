@@ -1,0 +1,12 @@
+{
+  "units": [
+    {
+      "id": "create_project",
+      "api": "create_project(owner,name)->dict"
+    },
+    {
+      "id": "list_projects",
+      "api": "list_projects(owner)->list"
+    }
+  ]
+}

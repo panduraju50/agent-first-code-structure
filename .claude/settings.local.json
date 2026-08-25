@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 generate.py)",
+      "Bash(xargs -I{} python3 -c \"import ast; ast.parse\\(open\\('{}'\\).read\\(\\)\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 -c \"from gen.S_01 import _db\")"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "units": [
+    {
+      "id": "paginate",
+      "api": "paginate(items,page,size)->list"
+    }
+  ]
+}

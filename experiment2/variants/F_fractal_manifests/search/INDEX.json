@@ -1,0 +1,8 @@
+{
+  "units": [
+    {
+      "id": "search_tasks",
+      "api": "search_tasks(q)->list"
+    }
+  ]
+}
