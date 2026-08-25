@@ -1,0 +1,10 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+corelib = { path = "../core" }
+users = { path = "../users" }
+tasks = { path = "../tasks" }
+notifier = { path = "../notifier" }
