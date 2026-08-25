@@ -1,24 +1,31 @@
-# Experiment 3 — Three negatives and one positive
+# Experiment 3 — What survives, after five rounds
 
 **Question:** do prompt engineering, context engineering, workflow orchestration,
-build/test loops, and dependency graphs change what an agent produces?
+build/test loops, dependency graphs, or a shared contract object change what an
+agent produces?
 
-**Answers:**
+**Answers, in order of how much I trust them:**
 
-- **Prompt, context, workflow, loop: no.** Two rounds under deliberately hostile
-  conditions — seven independent traps, decoys that compile — and the worst
-  condition scored identically to the best, both times.
-- **A dependency graph: yes, but only for one specific job.** When the task moved
-  from *retrieving* a primitive to finding the *transitive impact* of a semantic
-  change, the arms diverged for the first time: 3/3 correct with a graph, 1/3
-  without, and two no-graph runs shipped a latent bug behind a fully green test
-  suite.
+1. **A shared contract object cuts the change from three edit sites to one.**
+   6 of 6 runs, zero variance, across two different prompt wordings. This is a
+   structural fact, not a statistical inference.
+2. **Prompt, context, workflow and loop: no measurable effect.** Two rounds under
+   deliberately hostile conditions — seven traps, decoys that compile — and the
+   worst condition scored identically to the best, both times.
+3. **A dependency graph: unproven.** Round 3 appeared to show a large effect. It
+   did not replicate, and part of it traced to a confound in my own prompt. See
+   the retraction below.
 
-The difference between those two results is the whole finding. Rounds 1 and 2
-tested retrieval, where grep already suffices and nothing can improve on it.
-Round 3 tested discovery of an invisible coupling, which is the only thing a graph
-does that a cheaper tool does not — and even there, two cheaper tools beat it. See
-"Is a graph the best tool for this?" below.
+Pooled correctness across every run and both prompt wordings:
+
+| condition | correct | source files changed |
+|---|---|---|
+| plain | 6/9 (66%) | 3, 3, 3, 3, 2, 3 |
+| graph | 6/6 (100%) | 3, 3, 3 |
+| contract object | 6/6 (100%) | **1, 1, 1, 1, 1, 1** |
+
+Plain versus contract on correctness: Fisher exact **p = 0.23**. Not significant.
+The blast-radius column is where the real difference lives.
 
 ---
 
@@ -194,9 +201,77 @@ True — unless the escaped colon is the *first* colon on the line, in which cas
 the split lands inside payload text and invents a header. Seeing that requires
 reasoning about what `escape_body` now emits, which lives in another crate.
 
-n = 3 per arm, so treat this as suggestive rather than established. The graph was
-also hand-authored with correct edges; a real repository has to maintain them,
-and a stale graph is worse than none.
+n = 3 per arm. Rounds 4 and 5 show this was too few: the same condition scored
+1/3, 3/3 and 2/3 across three rounds. The graph was also hand-authored with
+correct edges; a real repository has to maintain them, and a stale graph is worse
+than none.
+
+## Round 3 retracted, in part
+
+Round 3 reported 3/3 with a graph against 1/3 without. Two later rounds show that
+headline was mostly noise, and partly a confound I introduced myself.
+
+Round 4 ran the same change on the same repository with the same model, and plain
+scored **3/3**. The only thing that differed was my wording:
+
+- round 3: "\\`corelib::escape::escape_body\\` currently escapes backslash, \\`|\\` and newline…"
+- round 4: "Escaping currently covers backslash, \\`|\\` and newline…"
+
+Round 3 **named the function**. I removed the name in round 4 only so the same
+sentence would fit the contract repository, where the function is \\`BODY.encode\\` —
+an incidental edit, not a designed variable. Naming a file plausibly anchors an
+agent to it: it patches there and stops. The graph condition had edges pointing
+elsewhere, so it looked elsewhere. On that reading round 3 did not measure the
+graph; it measured the graph rescuing agents from an anchor my prompt created.
+
+Round 5 replayed round 3's prompt verbatim on the plain repository: **2/3**. So
+anchoring explains part of the gap and ordinary variance explains the rest. Across
+all nine plain runs the true rate is about **two thirds**, and 1/3 versus 3/3 was
+me reading noise at n = 3.
+
+What still stands: plain has now failed 3 of 9 times, while graph and contract have
+not failed in 6 attempts each. That is suggestive. It is not established, and this
+file should not be quoted as if it were.
+
+## Round 4 — the contract object
+
+The two cheaper alternatives named below can be combined into one artifact: put
+the thing both parties must agree about in a single place they each consume, and
+give it an executable invariant. For escaping, that is one table.
+
+```rust
+pub const BODY: Scheme = Scheme {
+    escapes: &[('\\', '\\'), ('|', '|'), ('\n', 'n')],   // add a row, done
+};
+```
+
+`encode`, `decode` and `first_unescaped` all read that table, so they cannot
+disagree. `search::unescape_body` becomes `BODY.decode(s)`. `webhooks::split_headers`
+asks `BODY.first_unescaped(line, ':')` where a delimiter really is. The round-trip
+property generates its samples *from the table*, so it automatically covers
+characters added later.
+
+Three conditions, one byte-identical change request, three runs each — then
+repeated under round 3's prompt to control for the anchoring confound:
+
+| condition | correct | files changed |
+|---|---|---|
+| plain | 6/9 | mean 2.8 |
+| graph | 6/6 | mean 3.0 |
+| contract | 6/6 | **exactly 1, every time** |
+
+The correctness difference is not significant. The blast-radius difference is
+absolute: every contract run changed one row in one file; every plain and graph
+run changed three files and had to reason correctly about each.
+
+That is the mechanism, and it is why the two are not interchangeable:
+
+> A graph makes a three-site change **findable**. A contract object makes it a
+> **one-site** change. The graph helps an agent navigate the opportunity for
+> error; the contract object removes it.
+
+Three edit sites give three chances to get it wrong, which is consistent with
+plain failing about a third of the time. One site has nothing to miss.
 
 ## Is a graph the best tool for this?
 
@@ -233,7 +308,7 @@ writing it requires already knowing the dependent exists.
 
 ---
 
-## The instrument caught five of its own defects
+## Six defects, five in the instrument and one in the protocol
 
 Worth recording, because each would have silently invalidated a 30-run screening
 had the pilots not been run first:
@@ -263,6 +338,17 @@ had the pilots not been run first:
    produced the divergence reported above. Without chasing down why a 2-of-3-sites
    run was passing everything, this round would have reported a positive result
    resting on an assertion that tested nothing.
+6. **A confound in the protocol, not the scorer.** Round 3's prompt named the
+   function being changed; round 4's did not, because I reworded it to fit a
+   second repository. That incidental edit plausibly moved the result more than
+   the variable under test did. It surfaced only because round 4's plain
+   condition contradicted round 3's, and I went looking for why instead of
+   reporting the newer number.
+
+The standing lesson across all six: every one was found by asking why a number
+looked the way it did, rather than by accepting a number that pointed the
+preferred way. Four of the six would have produced a *publishable-looking* result
+that was wrong.
 
 Calibrating against a known-good and a known-bad reference before spending the
 budget caught all three. It is the cheapest step in the whole process.

@@ -1,0 +1,3 @@
+[workspace]
+resolver = "2"
+members = ["crates/app", "crates/attachments", "crates/audit", "crates/comments", "crates/corelib", "crates/labels", "crates/legacy", "crates/notifier", "crates/projects", "crates/search", "crates/tags", "crates/tasks", "crates/teams", "crates/users", "crates/webhooks"]

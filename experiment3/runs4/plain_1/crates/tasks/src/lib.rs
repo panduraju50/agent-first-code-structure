@@ -1,0 +1,118 @@
+use corelib::ids::short_code;
+use corelib::priority::Priority;
+use corelib::validate::validate_title;
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct Task {
+    pub id: String,
+    pub project: String,
+    pub title: String,
+    pub done: bool,
+    pub assignee: Option<String>,
+    pub priority: Priority,
+    pub due: Option<i64>,
+}
+
+#[derive(Default)]
+pub struct TaskStore {
+    tasks: Vec<Task>,
+    seq: u64,
+}
+
+impl TaskStore {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn create(&mut self, project: &str, title: &str) -> Result<Task, String> {
+        validate_title(title)?;
+        self.seq += 1;
+        let task = Task {
+            id: short_code(self.seq),
+            project: project.trim().to_string(),
+            title: title.trim().to_string(),
+            done: false,
+            assignee: None,
+            priority: Priority::Normal,
+            due: None,
+        };
+        self.tasks.push(task.clone());
+        Ok(task)
+    }
+
+    pub fn get(&self, id: &str) -> Option<&Task> {
+        self.tasks.iter().find(|t| t.id == id)
+    }
+
+    pub fn list(&self) -> &[Task] {
+        &self.tasks
+    }
+
+    pub fn in_project(&self, project: &str) -> Vec<&Task> {
+        self.tasks.iter().filter(|t| t.project == project).collect()
+    }
+
+    pub fn complete(&mut self, id: &str) -> Result<(), String> {
+        let t = self.find_mut(id)?;
+        t.done = true;
+        Ok(())
+    }
+
+    pub fn assign(&mut self, id: &str, user_id: &str) -> Result<(), String> {
+        let t = self.find_mut(id)?;
+        t.assignee = Some(user_id.to_string());
+        Ok(())
+    }
+
+    pub fn set_priority(&mut self, id: &str, p: Priority) -> Result<(), String> {
+        let t = self.find_mut(id)?;
+        t.priority = p;
+        Ok(())
+    }
+
+    pub fn set_due(&mut self, id: &str, due_ts: i64) -> Result<(), String> {
+        let t = self.find_mut(id)?;
+        t.due = Some(due_ts);
+        Ok(())
+    }
+
+    fn find_mut(&mut self, id: &str) -> Result<&mut Task, String> {
+        self.tasks
+            .iter_mut()
+            .find(|t| t.id == id)
+            .ok_or_else(|| format!("no such task: {id}"))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn creates_and_lists() {
+        let mut s = TaskStore::new();
+        let t = s.create("p1", "write docs").unwrap();
+        assert_eq!(s.get(&t.id).unwrap().title, "write docs");
+        assert_eq!(s.in_project("p1").len(), 1);
+    }
+
+    #[test]
+    fn rejects_blank_title() {
+        let mut s = TaskStore::new();
+        assert!(s.create("p1", "  ").is_err());
+    }
+
+    #[test]
+    fn completes_assigns_prioritises() {
+        let mut s = TaskStore::new();
+        let t = s.create("p1", "ship").unwrap();
+        s.complete(&t.id).unwrap();
+        s.assign(&t.id, "u1").unwrap();
+        s.set_priority(&t.id, Priority::High).unwrap();
+        s.set_due(&t.id, 86_400).unwrap();
+        let got = s.get(&t.id).unwrap();
+        assert!(got.done);
+        assert_eq!(got.priority, Priority::High);
+        assert_eq!(got.due, Some(86_400));
+    }
+}

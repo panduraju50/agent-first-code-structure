@@ -96,18 +96,18 @@ did not survive, and the strongest result is a negative one.
   well-structured repository. Two rounds, seven traps, decoys that compile: a
   bare one-shot prompt with no context scored identically to plan→build→review
   with a manifest and a test loop. See [experiment 3](experiment3/RESULTS.md).
-- **A dependency graph helps with one thing: finding couplings nothing else can
-  see.** Changing a primitive's *output format* breaks code that never calls it,
-  so grep misses it and the compiler stays silent. With the coupling recorded as
-  an edge, 3/3 runs got it right; without, 1/3, and two shipped a latent bug
-  behind a green suite. This is the only condition in the project where the arms
-  diverged at all. n = 3 per arm — suggestive, not established.
-- **But a graph is the third-best fix for that.** Better: eliminate the coupling
-  (co-locate an inverse pair, or have encoder and decoder share one constant), or
-  make the contract a property test — a ten-line round-trip test catches the same
-  bug, needs no maintenance, and cannot go stale silently the way a graph can.
-  Property tests *verify* couplings you know about; a graph is how you *discover*
-  the ones you do not.
+- **A shared contract object turns a three-site change into a one-site change.**
+  Put the thing two pieces of code must agree about into one artifact they both
+  consume, and give it an executable invariant. Across 6 runs and two prompt
+  wordings, every run changed exactly one line in one file; plain and graph runs
+  changed three files every time. Zero variance — a structural fact rather than a
+  statistical one.
+- **A dependency graph: unproven.** An early round appeared to show a large
+  effect. It did not replicate, and part of it traced to a confound in my own
+  prompt. Pooled over every run: plain 6/9 correct, graph 6/6, contract 6/6 —
+  Fisher exact p = 0.23, not significant. What separates the conditions is blast
+  radius, not correctness: a graph helps an agent *navigate* three edit sites; a
+  contract object removes two of them.
 
 **What did not hold:**
 
