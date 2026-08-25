@@ -1,0 +1,33 @@
+{
+  "name": "taskly-lite-nextjs-design-d",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Design D starter: an agent-first Next.js repo organized around an explicit, typed dependency graph (core -> features -> composition -> app).",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "build:offline": "tsc -p tsconfig.build.json",
+    "test": "node scripts/build-and-test.mjs",
+    "lint:boundaries": "node scripts/check-boundaries.mjs",
+    "manifest:generate": "node scripts/generate-manifest.mjs",
+    "manifest:check": "node scripts/generate-manifest.mjs --check",
+    "ci": "node scripts/ci.mjs"
+  },
+  "dependencies": {
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "eslint": "^9.9.0",
+    "eslint-plugin-boundaries": "^4.2.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  },
+  "notes": {
+    "no-network-installs": "This starter is scaffolded and verified WITHOUT running `npm install`. `dev`/`build`/`start` need the real Next.js toolchain and are not exercised here. `build:offline`, `test`, `lint:boundaries`, `manifest:generate/check`, and `ci` use only the standard toolchain (tsc + node stdlib) and are fully offline-runnable. See README.md."
+  }
+}

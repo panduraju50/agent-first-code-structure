@@ -1,0 +1,34 @@
+; Design D boundary rules, expressed with import-linter (https://import-linter.readthedocs.io).
+;
+; This is the declarative, idiomatic-for-Python expression of the same two
+; rules that tools/boundary_check.py enforces with zero dependencies:
+;   1. layered architecture: app > domains > core (higher layers may import
+;      lower ones, never the reverse).
+;   2. domains.users and domains.tasks are mutually independent.
+;
+; If import-linter is installed (`pip install import-linter`), run it with:
+;     lint-imports --config .importlinter
+; `make boundary-lint` runs it automatically when available, and always
+; runs tools/boundary_check.py regardless — that script is the one gate CI
+; can depend on in an offline/no-network environment.
+
+[importlinter]
+root_packages =
+    core
+    domains
+    app
+
+[importlinter:contract:layers]
+name = Layered architecture: app > domains > core
+type = layers
+layers =
+    app
+    domains
+    core
+
+[importlinter:contract:domains-independent]
+name = Domains do not depend on each other
+type = independence
+modules =
+    domains.users
+    domains.tasks

@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  design-d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Offline path (the star of this repo): tsc + Node stdlib only.
+      - name: Build + test (tsc, then node --test)
+        run: node scripts/build-and-test.mjs
+
+      - name: Boundary lint - stdlib fallback (offline, zero deps)
+        run: node scripts/check-boundaries.mjs
+
+      - name: Manifest drift check
+        run: node scripts/generate-manifest.mjs --check
+
+      # Idiomatic-tool path: install just the lint toolchain (not the next/
+      # react app deps) and run the real eslint-plugin-boundaries config too.
+      - name: Boundary lint - eslint-plugin-boundaries (idiomatic tool)
+        run: |
+          npm install --no-save eslint@9 eslint-plugin-boundaries@4
+          npx eslint --config eslint.config.mjs "src/**/*.{ts,tsx}"

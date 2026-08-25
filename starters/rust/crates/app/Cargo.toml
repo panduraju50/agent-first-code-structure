@@ -1,0 +1,16 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "taskly"
+path = "src/main.rs"
+
+[dependencies]
+# app is the composition root: the ONE place in the workspace allowed to
+# depend on more than one domain crate at a time (Design D, rule 2).
+corelib = { path = "../core" }
+users = { path = "../users" }
+tasks = { path = "../tasks" }

@@ -1,0 +1,5 @@
+{
+  "name": "@taskly-lite/tasks",
+  "private": true,
+  "type": "module"
+}

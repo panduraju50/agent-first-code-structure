@@ -1,0 +1,83 @@
+{
+  "capabilities": {
+    "app.main.assign_task": {
+      "file": "app/main.py",
+      "kind": "function"
+    },
+    "app.main.run_scenario": {
+      "file": "app/main.py",
+      "kind": "function"
+    },
+    "core.ids.from_base62": {
+      "file": "core/ids.py",
+      "kind": "function"
+    },
+    "core.ids.new_id": {
+      "file": "core/ids.py",
+      "kind": "function"
+    },
+    "core.ids.to_base62": {
+      "file": "core/ids.py",
+      "kind": "function"
+    },
+    "core.validation.validate_email": {
+      "file": "core/validation.py",
+      "kind": "function"
+    },
+    "core.validation.validate_title": {
+      "file": "core/validation.py",
+      "kind": "function"
+    },
+    "domains.tasks.models.Task": {
+      "file": "domains/tasks/models.py",
+      "kind": "class"
+    },
+    "domains.tasks.service.TaskStore": {
+      "file": "domains/tasks/service.py",
+      "kind": "class"
+    },
+    "domains.users.models.User": {
+      "file": "domains/users/models.py",
+      "kind": "class"
+    },
+    "domains.users.service.UserStore": {
+      "file": "domains/users/service.py",
+      "kind": "class"
+    }
+  },
+  "edges": [
+    {
+      "from": "app.main",
+      "to": "domains.tasks.service"
+    },
+    {
+      "from": "app.main",
+      "to": "domains.users.service"
+    },
+    {
+      "from": "domains.tasks.service",
+      "to": "core.ids"
+    },
+    {
+      "from": "domains.tasks.service",
+      "to": "core.validation"
+    },
+    {
+      "from": "domains.tasks.service",
+      "to": "domains.tasks.models"
+    },
+    {
+      "from": "domains.users.service",
+      "to": "core.ids"
+    },
+    {
+      "from": "domains.users.service",
+      "to": "core.validation"
+    },
+    {
+      "from": "domains.users.service",
+      "to": "domains.users.models"
+    }
+  ],
+  "generated_by": "tools/gen_manifest.py (auto-generated - do not hand-edit)"
+}

@@ -1,0 +1,72 @@
+{
+  "modules": [
+    {
+      "name": "taskly.core",
+      "path": "core",
+      "requires": [],
+      "exports": ["taskly.core.id", "taskly.core.validate"]
+    },
+    {
+      "name": "taskly.users",
+      "path": "users",
+      "requires": ["taskly.core"],
+      "exports": ["taskly.users"]
+    },
+    {
+      "name": "taskly.tasks",
+      "path": "tasks",
+      "requires": ["taskly.core"],
+      "exports": ["taskly.tasks"]
+    },
+    {
+      "name": "taskly.app",
+      "path": "app",
+      "requires": ["taskly.core", "taskly.users", "taskly.tasks"],
+      "exports": []
+    }
+  ],
+  "edges": [
+    { "from": "taskly.users", "to": "taskly.core", "type": "requires" },
+    { "from": "taskly.tasks", "to": "taskly.core", "type": "requires" },
+    { "from": "taskly.app", "to": "taskly.core", "type": "requires" },
+    { "from": "taskly.app", "to": "taskly.users", "type": "requires" },
+    { "from": "taskly.app", "to": "taskly.tasks", "type": "requires" }
+  ],
+  "capabilities": [
+    {
+      "capability": "main",
+      "owner": "app/src/main/java/taskly/app/Main.java",
+      "module": "taskly.app"
+    },
+    {
+      "capability": "base62-encoder",
+      "owner": "core/src/main/java/taskly/core/id/Base62Encoder.java",
+      "module": "taskly.core"
+    },
+    {
+      "capability": "validators",
+      "owner": "core/src/main/java/taskly/core/validate/Validators.java",
+      "module": "taskly.core"
+    },
+    {
+      "capability": "task",
+      "owner": "tasks/src/main/java/taskly/tasks/Task.java",
+      "module": "taskly.tasks"
+    },
+    {
+      "capability": "task-service",
+      "owner": "tasks/src/main/java/taskly/tasks/TaskService.java",
+      "module": "taskly.tasks"
+    },
+    {
+      "capability": "user",
+      "owner": "users/src/main/java/taskly/users/User.java",
+      "module": "taskly.users"
+    },
+    {
+      "capability": "user-service",
+      "owner": "users/src/main/java/taskly/users/UserService.java",
+      "module": "taskly.users"
+    }
+  ]
+}

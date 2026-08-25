@@ -1,0 +1,174 @@
+{
+  "generatedBy": "tools/gen-manifest.mjs",
+  "note": "Generated from the packages/ module graph. Do not hand-edit — run `npm run generate:manifest`.",
+  "packages": [
+    "app",
+    "core",
+    "tasks",
+    "users"
+  ],
+  "capabilities": [
+    {
+      "capability": "assignTask",
+      "kind": "function",
+      "package": "tasks",
+      "file": "packages/tasks/src/index.ts"
+    },
+    {
+      "capability": "createTask",
+      "kind": "function",
+      "package": "tasks",
+      "file": "packages/tasks/src/index.ts"
+    },
+    {
+      "capability": "createUser",
+      "kind": "function",
+      "package": "users",
+      "file": "packages/users/src/index.ts"
+    },
+    {
+      "capability": "decodeBase62",
+      "kind": "function",
+      "package": "core",
+      "file": "packages/core/src/id.ts"
+    },
+    {
+      "capability": "encodeBase62",
+      "kind": "function",
+      "package": "core",
+      "file": "packages/core/src/id.ts"
+    },
+    {
+      "capability": "getUser",
+      "kind": "function",
+      "package": "users",
+      "file": "packages/users/src/index.ts"
+    },
+    {
+      "capability": "listTasks",
+      "kind": "function",
+      "package": "tasks",
+      "file": "packages/tasks/src/index.ts"
+    },
+    {
+      "capability": "nextId",
+      "kind": "function",
+      "package": "core",
+      "file": "packages/core/src/id.ts"
+    },
+    {
+      "capability": "Task",
+      "kind": "interface",
+      "package": "tasks",
+      "file": "packages/tasks/src/types.ts"
+    },
+    {
+      "capability": "User",
+      "kind": "interface",
+      "package": "users",
+      "file": "packages/users/src/types.ts"
+    },
+    {
+      "capability": "validateEmail",
+      "kind": "function",
+      "package": "core",
+      "file": "packages/core/src/validate.ts"
+    },
+    {
+      "capability": "validateTitle",
+      "kind": "function",
+      "package": "core",
+      "file": "packages/core/src/validate.ts"
+    },
+    {
+      "capability": "ValidationError",
+      "kind": "class",
+      "package": "core",
+      "file": "packages/core/src/validate.ts"
+    }
+  ],
+  "packageEdges": [
+    {
+      "from": "app",
+      "to": "tasks"
+    },
+    {
+      "from": "app",
+      "to": "users"
+    },
+    {
+      "from": "tasks",
+      "to": "core"
+    },
+    {
+      "from": "users",
+      "to": "core"
+    }
+  ],
+  "fileEdges": [
+    {
+      "from": "packages/app/src/main.ts",
+      "to": "packages/tasks/src/index.ts"
+    },
+    {
+      "from": "packages/app/src/main.ts",
+      "to": "packages/users/src/index.ts"
+    },
+    {
+      "from": "packages/core/src/index.ts",
+      "to": "packages/core/src/id.ts"
+    },
+    {
+      "from": "packages/core/src/index.ts",
+      "to": "packages/core/src/validate.ts"
+    },
+    {
+      "from": "packages/core/test/id.test.ts",
+      "to": "packages/core/src/id.ts"
+    },
+    {
+      "from": "packages/core/test/validate.test.ts",
+      "to": "packages/core/src/validate.ts"
+    },
+    {
+      "from": "packages/tasks/src/index.ts",
+      "to": "packages/core/src/id.ts"
+    },
+    {
+      "from": "packages/tasks/src/index.ts",
+      "to": "packages/core/src/validate.ts"
+    },
+    {
+      "from": "packages/tasks/src/index.ts",
+      "to": "packages/tasks/src/types.ts"
+    },
+    {
+      "from": "packages/tasks/test/tasks.test.ts",
+      "to": "packages/core/src/validate.ts"
+    },
+    {
+      "from": "packages/tasks/test/tasks.test.ts",
+      "to": "packages/tasks/src/index.ts"
+    },
+    {
+      "from": "packages/users/src/index.ts",
+      "to": "packages/core/src/id.ts"
+    },
+    {
+      "from": "packages/users/src/index.ts",
+      "to": "packages/core/src/validate.ts"
+    },
+    {
+      "from": "packages/users/src/index.ts",
+      "to": "packages/users/src/types.ts"
+    },
+    {
+      "from": "packages/users/test/users.test.ts",
+      "to": "packages/core/src/validate.ts"
+    },
+    {
+      "from": "packages/users/test/users.test.ts",
+      "to": "packages/users/src/index.ts"
+    }
+  ]
+}

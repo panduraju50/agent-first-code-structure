@@ -1,0 +1,12 @@
+[package]
+name = "users"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+# The enforced graph, in one line: a domain crate's ONLY workspace
+# dependency is core. boundary-lint fails the build if this table ever
+# gains a `tasks = { path = ... }` entry (or anything else workspace-local
+# besides corelib).
+corelib = { path = "../core" }

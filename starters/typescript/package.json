@@ -1,0 +1,20 @@
+{
+  "name": "taskly-lite",
+  "private": true,
+  "type": "module",
+  "description": "Design D starter: an agent-first repo whose organizing principle is an explicit, typed dependency graph.",
+  "scripts": {
+    "build": "tsc -b .",
+    "clean": "tsc -b . --clean && rm -rf packages/*/dist packages/*/*.tsbuildinfo",
+    "test": "node --test packages/core/test/*.test.ts packages/users/test/*.test.ts packages/tasks/test/*.test.ts",
+    "start": "node packages/app/src/main.ts",
+    "lint:boundaries": "node tools/boundary-lint.mjs",
+    "generate:manifest": "node tools/gen-manifest.mjs --write",
+    "check:manifest": "node tools/gen-manifest.mjs --check",
+    "ci": "npm run build && npm run test && npm run lint:boundaries && npm run check:manifest"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "dependency-cruiser": "^16.4.0"
+  }
+}

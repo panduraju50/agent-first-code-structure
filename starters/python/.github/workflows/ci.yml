@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Optional: import-linter gives the declarative .importlinter contracts
+      # a runner. It is not required — tools/boundary_check.py (stdlib only)
+      # is the gate this workflow actually depends on — so a network hiccup
+      # here must never fail the build.
+      - name: install import-linter (optional, non-blocking)
+        run: pip install import-linter || true
+
+      - name: build
+        run: make build
+
+      - name: test
+        run: make test
+
+      - name: boundary lint (domain isolation + one-home primitives)
+        run: make boundary-lint
+
+      - name: manifest drift check
+        run: make manifest-check

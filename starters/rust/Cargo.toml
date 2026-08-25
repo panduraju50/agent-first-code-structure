@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/core",
+    "crates/users",
+    "crates/tasks",
+    "crates/app",
+    "xtask",
+]
+
+# No [workspace.dependencies] on purpose: every crate below depends only on
+# the Rust standard library plus, where Design D allows it, on other
+# workspace crates via `path = "..."`. Zero crates.io dependencies means the
+# whole workspace builds and tests fully offline.

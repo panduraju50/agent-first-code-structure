@@ -1,0 +1,79 @@
+{
+  "capabilities": {
+    "composition.root": "src/composition/root.ts",
+    "core.barrel": "src/core/index.ts",
+    "core.id.base62": "src/core/id/base62.ts",
+    "core.validation.email": "src/core/validation/validators.ts",
+    "core.validation.title": "src/core/validation/validators.ts",
+    "tasks.assign": "src/features/tasks/service.ts",
+    "tasks.create": "src/features/tasks/service.ts",
+    "tasks.list": "src/features/tasks/service.ts",
+    "users.create": "src/features/users/service.ts",
+    "users.get": "src/features/users/service.ts"
+  },
+  "domains": {
+    "core": [
+      "src/core/id/base62.ts",
+      "src/core/index.ts",
+      "src/core/validation/validators.ts"
+    ],
+    "users": [
+      "src/features/users/index.ts",
+      "src/features/users/repository.ts",
+      "src/features/users/service.test.ts",
+      "src/features/users/service.ts",
+      "src/features/users/types.ts"
+    ],
+    "tasks": [
+      "src/features/tasks/index.ts",
+      "src/features/tasks/repository.ts",
+      "src/features/tasks/service.test.ts",
+      "src/features/tasks/service.ts",
+      "src/features/tasks/types.ts"
+    ],
+    "composition": [
+      "src/composition/root.ts",
+      "src/composition/run.ts"
+    ],
+    "app": [
+      "src/app/layout.tsx",
+      "src/app/page.tsx",
+      "src/app/tasks/TaskForm.tsx",
+      "src/app/tasks/page.tsx"
+    ]
+  },
+  "edges": {
+    "files": [
+      "src/app/tasks/TaskForm.tsx -> src/core/index.ts",
+      "src/app/tasks/page.tsx -> src/app/tasks/TaskForm.tsx",
+      "src/app/tasks/page.tsx -> src/composition/root.ts",
+      "src/composition/root.ts -> src/features/tasks/index.ts",
+      "src/composition/root.ts -> src/features/users/index.ts",
+      "src/composition/run.ts -> src/composition/root.ts",
+      "src/core/index.ts -> src/core/id/base62.ts",
+      "src/core/index.ts -> src/core/validation/validators.ts",
+      "src/features/tasks/index.ts -> src/features/tasks/service.ts",
+      "src/features/tasks/index.ts -> src/features/tasks/types.ts",
+      "src/features/tasks/repository.ts -> src/features/tasks/types.ts",
+      "src/features/tasks/service.test.ts -> src/features/tasks/service.ts",
+      "src/features/tasks/service.ts -> src/core/index.ts",
+      "src/features/tasks/service.ts -> src/features/tasks/repository.ts",
+      "src/features/tasks/service.ts -> src/features/tasks/types.ts",
+      "src/features/users/index.ts -> src/features/users/service.ts",
+      "src/features/users/index.ts -> src/features/users/types.ts",
+      "src/features/users/repository.ts -> src/features/users/types.ts",
+      "src/features/users/service.test.ts -> src/features/users/service.ts",
+      "src/features/users/service.ts -> src/core/index.ts",
+      "src/features/users/service.ts -> src/features/users/repository.ts",
+      "src/features/users/service.ts -> src/features/users/types.ts"
+    ],
+    "domains": [
+      "app -> composition",
+      "app -> core",
+      "composition -> tasks",
+      "composition -> users",
+      "tasks -> core",
+      "users -> core"
+    ]
+  }
+}

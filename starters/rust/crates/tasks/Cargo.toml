@@ -1,0 +1,11 @@
+[package]
+name = "tasks"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+# Same rule as users/Cargo.toml: the ONLY workspace dependency is core.
+# There is deliberately no `users = { path = ... }` here -- tasks refers to
+# a user by opaque id (String), not by importing the users crate's type.
+corelib = { path = "../core" }

@@ -1,0 +1,17 @@
+[package]
+name = "corelib"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Package name is "corelib" (not "core") on purpose: the directory is
+# crates/core to match the required layout, but naming the package itself
+# "core" would collide with Rust's own sysroot `core` crate at `use` sites.
+
+[lib]
+name = "corelib"
+path = "src/lib.rs"
+
+[dependencies]
+# Intentionally empty. core is the leaf of the dependency graph: it must
+# never depend on a domain crate. boundary-lint (xtask) enforces this.

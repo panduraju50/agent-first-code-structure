@@ -1,0 +1,16 @@
+{
+  "//": "Offline verification config. tsconfig.json is the *real* Next.js config (bundler resolution, no emit) that `next dev`/`next build` use once `npm install` has actually happened. This file lets `tsc` alone compile+typecheck the same src/ tree to plain CommonJS so `node --test` can run it with zero network installs. See README.md.",
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "outDir": "dist",
+    "rootDir": "src",
+    "isolatedModules": false,
+    "ignoreDeprecations": "6.0",
+    "incremental": false
+  },
+  "include": ["src"]
+}

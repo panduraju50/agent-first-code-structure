@@ -1,0 +1,27 @@
+# Design D CI pipeline, runnable locally or from .github/workflows/ci.yml.
+# Everything here is offline: zero crates.io dependencies anywhere in the
+# workspace, so --offline never has anything to fetch.
+
+default: ci
+
+build:
+    cargo build --workspace --offline
+
+test:
+    cargo test --workspace --offline
+
+boundary-lint:
+    cargo run -p xtask --offline -- boundary-lint
+
+manifest-gen:
+    cargo run -p xtask --offline -- manifest-gen
+
+manifest-check:
+    cargo run -p xtask --offline -- manifest-check
+
+run:
+    cargo run -p app --offline
+
+# build + test + boundary-lint (rule 3) + manifest-drift-check (rule 4)
+ci: build test boundary-lint manifest-check
+    @echo "ci: all checks passed"

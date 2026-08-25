@@ -1,0 +1,14 @@
+// Root solution file: the typed build DAG's entry point.
+// `tsc -b .` builds every referenced project in dependency order and FAILS
+// the whole build if a package imports a file from a project it does not
+// declare in its own `references` array (see packages/*/tsconfig.json).
+// This is TS project references acting out Design D's typed edges.
+{
+  "files": [],
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/users" },
+    { "path": "packages/tasks" },
+    { "path": "packages/app" }
+  ]
+}

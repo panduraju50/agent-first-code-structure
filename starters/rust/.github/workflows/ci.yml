@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: install rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      # No `cargo fetch` / registry step: the workspace has zero crates.io
+      # dependencies, so every step below is fully offline.
+
+      - name: build
+        run: cargo build --workspace --offline
+
+      - name: test (includes at least one test per domain crate)
+        run: cargo test --workspace --offline
+
+      - name: boundary-lint -- Design D enforcer (rule 3)
+        run: cargo run -p xtask --offline -- boundary-lint
+
+      - name: manifest drift check (rule 4)
+        run: cargo run -p xtask --offline -- manifest-check

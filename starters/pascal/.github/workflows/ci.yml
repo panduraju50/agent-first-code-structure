@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Free Pascal
+        run: sudo apt-get update && sudo apt-get install -y fpc
+
+      # boundary-lint and manifest-check run first and need no compiler —
+      # they're pure shell/awk over source text — so a boundary violation
+      # or a stale manifest fails fast, before spending time on a build.
+      - name: build + test + boundary-lint + manifest-drift-check
+        run: make ci

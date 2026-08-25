@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-test-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # devDependencies are TypeScript + dependency-cruiser (see package.json).
+      # Nothing here is required for correctness of the offline-guaranteed
+      # checks below — they run with tools/*.mjs + Node stdlib only — but a
+      # networked CI runner has it available, so we install and run it too.
+      - name: install
+        run: npm install
+
+      # 1. build — the typed dependency DAG (TS project references). Fails
+      #    if a package imports a file it has not declared in its own
+      #    tsconfig.json "references" array.
+      - name: build (tsc -b, typed project-reference DAG)
+        run: npm run build
+
+      # 2. test — at least one test per domain (packages/users, packages/tasks)
+      #    plus core, run with Node's built-in test runner directly against
+      #    the TypeScript sources (Node 22+ strips types natively).
+      - name: test
+        run: npm run test
+
+      # 3. boundary-lint — the offline-guaranteed enforcer. No node_modules
+      #    required: pure Node stdlib. Fails on any domain-to-domain import,
+      #    or any duplicate/base62-lookalike primitive declared outside
+      #    packages/core.
+      - name: boundary-lint (stdlib enforcer)
+        run: npm run lint:boundaries
+
+      # 3b. Same two rules, expressed with the idiomatic dependency-graph
+      #     tool. Best-effort in this workflow (requires the npm install
+      #     step above); boundary-lint above is what CI actually gates on.
+      - name: boundary-lint (dependency-cruiser)
+        run: npx depcruise packages --config .dependency-cruiser.js
+
+      # 4. manifest-drift-check — fails if packages/ changed but
+      #    manifest.json was not regenerated to match.
+      - name: manifest drift check
+        run: npm run check:manifest
