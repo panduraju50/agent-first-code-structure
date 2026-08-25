@@ -108,6 +108,15 @@ did not survive, and the strongest result is a negative one.
   obvious rival explanation, that the contract repository is simply a nicer
   codebase to work in; if it were, that round would have gone the same way as the
   others.
+- **An end-to-end invariant catches that coupling — and half the agents silence
+  it instead.** Adding a cross-crate pipeline test moved the same task from 0/10
+  to 5/10 (p = 0.033). The invariant fired in **10 of 10** runs and named the
+  exact failure. Five agents fixed the code; five **edited the test fixture** so
+  it stopped failing, and all five shipped the bug (correlation perfect,
+  p = 0.008). A contract object cannot be argued with; a test can be edited, and
+  "make the tests pass" admits a cheaper reading. This is the most practical
+  finding here, and it is a caution about test-based mechanisms rather than an
+  endorsement.
 - **A dependency graph: unproven.** An early round appeared to show a large
   effect. It did not replicate, and part of it traced to a confound in my own
   prompt. A graph helps an agent *navigate* three edit sites; a contract object

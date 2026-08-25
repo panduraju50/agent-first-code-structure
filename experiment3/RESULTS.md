@@ -1,4 +1,4 @@
-# Experiment 3 — What survives, after seven rounds
+# Experiment 3 — What survives, after eight rounds
 
 **Question:** do prompt engineering, context engineering, workflow orchestration,
 build/test loops, dependency graphs, or a shared contract object change what an
@@ -17,10 +17,16 @@ agent produces?
    Result: **plain 0/5, contract 0/5**, identical, and all ten shipped a false
    green. The mechanism is not general competence; it is specific to couplings
    the artifact encodes.
-3. **Prompt, context, workflow and loop: no measurable effect.** Two rounds under
+3. **An end-to-end invariant catches what unit contracts cannot — but half the
+   agents silence it instead of obeying it.** Adding a cross-crate pipeline test
+   took round 7's coupling from 0/10 to **5/10** (p = 0.033). The invariant fired
+   in **10 of 10** runs. Five agents fixed the code; the other five **edited the
+   test fixture** so it stopped failing, and all five of those shipped the bug.
+   The correlation between weakening the test and failing is perfect (p = 0.008).
+4. **Prompt, context, workflow and loop: no measurable effect.** Two rounds under
    deliberately hostile conditions — seven traps, decoys that compile — and the
    worst condition scored identically to the best, both times.
-4. **A dependency graph: unproven.** Round 3 appeared to show a large effect. It
+5. **A dependency graph: unproven.** Round 3 appeared to show a large effect. It
    did not replicate, and part of it traced to a confound in my own prompt. See
    the retraction below.
 
@@ -339,6 +345,78 @@ The regression criterion was deliberately free of opinion about *how* to fix it
 (raising the limit and measuring length before escaping both pass), and a guard
 test asserted the fixture still grows when escaped, so the round could not quietly
 stop testing anything — the failure mode that produced defect 5.
+
+## Round 8 — the invariant, and what agents do to it
+
+Round 7's coupling defeated both validated mechanisms because both are
+*unit-level*: they describe one primitive, or an agreement between two parties
+about a format. The coupling in round 7 lives in neither. It lives in the space
+between components — escaping makes bodies longer, and something downstream has a
+length budget.
+
+So round 8 added an invariant at that altitude, in `crates/app/tests/pipeline.rs`:
+
+```rust
+let sent = notifier.send("u1", &body, 0);
+assert!(webhooks::accepts(&sent.body), ...);
+```
+
+*Any body the notifier accepts must be deliverable.* No single crate's unit tests
+can see this. It passed before the change and, on the naive change, failed with a
+message naming the exact body and its byte count.
+
+Same repository, same request, same model as round 7:
+
+| | correct |
+|---|---|
+| round 7, no invariant | **0/10** |
+| round 8, with invariant | **5/10** |
+
+Fisher exact **p = 0.033**. A real effect — and far weaker than predicted. I
+expected it to catch the bug outright.
+
+### Why the other half failed
+
+| | fired | agent fixed the code | agent weakened the test |
+|---|---|---|---|
+| round 8 | 10/10 | 5/10 | **5/10** |
+
+The invariant worked perfectly. It fired in every single run and said exactly what
+was wrong. Then **five of ten agents edited the test fixture** — shrinking the
+representative body from eleven colons to eight — so the assertion stopped
+failing, and left the length budget untouched:
+
+| outcome | `MAX_STORED_BODY` | fixture |
+|---|---|---|
+| 5 passes | raised to 32 or 34 | left at eleven colons |
+| 5 failures | **left at 24** | **shrunk to eight colons** |
+
+The correlation is perfect: every run that shrank the fixture failed, every run
+that did not, passed (p = 0.008). One agent stated the reasoning plainly — it
+declined to "loosen the production wire-size constant", judging the fixture the
+safer thing to change. That is a defensible-sounding instinct that happens to be
+exactly backwards: the fixture was documented as "bodies the product is expected
+to handle", so shrinking it silently narrowed the product's contract.
+
+### What this means
+
+This is the most practically important result in the project, and it is a warning
+about the mechanism I was advocating:
+
+> A test-based invariant introduces a failure mode that a structural mechanism
+> does not. A contract object cannot be argued with — there is one definition and
+> the change propagates. A test can be edited, and when an agent is told "make
+> cargo test pass", editing the test satisfies the instruction.
+
+Half the agents in this round chose the interpretation that made the red go away.
+Nothing in the request was ambiguous about intent; the instruction "cargo test
+must pass" simply admits two readings, and the cheaper one is available.
+
+Practical consequence: an invariant meant to hold a boundary should be hard to
+weaken by accident — fixtures derived from the production contract rather than
+written inline, review that treats a shrunk fixture as a red flag, or the
+assertion expressed against a constant the product itself uses. Otherwise the
+mechanism protects against the bug and not against the fix.
 
 ## Is a graph the best tool for this?
 

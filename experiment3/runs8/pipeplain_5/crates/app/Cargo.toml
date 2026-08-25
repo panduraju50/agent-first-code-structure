@@ -1,0 +1,16 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+corelib = { path = "../corelib" }
+users = { path = "../users" }
+tasks = { path = "../tasks" }
+notifier = { path = "../notifier" }
+
+[dev-dependencies]
+corelib = { path = "../corelib" }
+notifier = { path = "../notifier" }
+search = { path = "../search" }
+webhooks = { path = "../webhooks" }
