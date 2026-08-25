@@ -1,0 +1,119 @@
+{
+  "generated_by": "dependency scan + recorded format contracts",
+  "edge_types": {
+    "crate_dependency": "declared in Cargo.toml",
+    "calls": "direct call",
+    "format_contract": "must agree with another unit's output format, without calling it",
+    "data_flow": "carries another unit's output onward"
+  },
+  "edges": [
+    {
+      "from": "app",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "app",
+      "to": "users",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "app",
+      "to": "tasks",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "app",
+      "to": "notifier",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "attachments",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "audit",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "comments",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "labels",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "notifier",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "projects",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "search",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "tags",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "tasks",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "teams",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "users",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "webhooks",
+      "to": "corelib",
+      "type": "crate_dependency"
+    },
+    {
+      "from": "notifier::send",
+      "to": "corelib::escape::escape_body",
+      "type": "calls"
+    },
+    {
+      "from": "search::unescape_body",
+      "to": "corelib::escape::escape_body",
+      "type": "format_contract",
+      "note": "inverse of; must decode exactly what escape_body encodes"
+    },
+    {
+      "from": "search::search_body",
+      "to": "search::unescape_body",
+      "type": "calls"
+    },
+    {
+      "from": "webhooks::split_headers",
+      "to": "corelib::escape::escape_body",
+      "type": "format_contract",
+      "note": "parses stored bodies; treats characters escape_body does not escape as delimiters"
+    },
+    {
+      "from": "audit",
+      "to": "notifier",
+      "type": "data_flow",
+      "note": "records notification bodies as stored"
+    }
+  ]
+}

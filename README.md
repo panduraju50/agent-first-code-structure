@@ -47,11 +47,15 @@ folders where each model built the app in *its own* structure.
 validation, missing authorization on assign, off-by-one pagination.
 See [`experiment2/RESULTS.md`](experiment2/RESULTS.md).
 
-### Experiment 3 — do prompt/context/workflow/loop matter? (`experiment3/`)
-A Rust workspace, a feature with seven traps, and decoys that compile but behave
-differently. Scored entirely by a program: hidden acceptance tests, a
-missing-edge duplication check, and decoy detection. The answer was no — the
-worst condition matched the best, twice.
+### Experiment 3 — do prompt / context / workflow / loop / graph matter? (`experiment3/`)
+A Rust workspace, scored entirely by a program: hidden acceptance tests the agent
+never sees, a missing-edge duplication check, and decoy detection. Three rounds.
+
+Prompt, context, workflow and loop: **no effect**, twice, with seven traps and
+decoys that compile. A dependency graph: **an effect**, but only once the task
+changed from *retrieving* a primitive to finding the *transitive impact* of a
+semantic change — 3/3 correct with a graph, 1/3 without, and two of the no-graph
+runs shipped a latent bug behind a fully green suite.
 See [`experiment3/RESULTS.md`](experiment3/RESULTS.md).
 
 ## Designs tested
@@ -92,6 +96,18 @@ did not survive, and the strongest result is a negative one.
   well-structured repository. Two rounds, seven traps, decoys that compile: a
   bare one-shot prompt with no context scored identically to plan→build→review
   with a manifest and a test loop. See [experiment 3](experiment3/RESULTS.md).
+- **A dependency graph helps with one thing: finding couplings nothing else can
+  see.** Changing a primitive's *output format* breaks code that never calls it,
+  so grep misses it and the compiler stays silent. With the coupling recorded as
+  an edge, 3/3 runs got it right; without, 1/3, and two shipped a latent bug
+  behind a green suite. This is the only condition in the project where the arms
+  diverged at all. n = 3 per arm — suggestive, not established.
+- **But a graph is the third-best fix for that.** Better: eliminate the coupling
+  (co-locate an inverse pair, or have encoder and decoder share one constant), or
+  make the contract a property test — a ten-line round-trip test catches the same
+  bug, needs no maintenance, and cannot go stale silently the way a graph can.
+  Property tests *verify* couplings you know about; a graph is how you *discover*
+  the ones you do not.
 
 **What did not hold:**
 
